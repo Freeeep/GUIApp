@@ -3,21 +3,24 @@ import customtkinter as ctk
 from tkinter import messagebox
 
 
+
 class App(ctk.CTk):
     def __init__(self) -> None:
 
         reswidth: int = 1080
         resheight: int = 920
+        framepadding: int = 3
+        ctk.set_appearance_mode("dark")
 
         super().__init__()
 
         #Basic Window Setup
-        self.title("CustomTkinter Example")
+        self.title("Pyhton Toolbox")
         self.geometry(f"{reswidth}x{resheight}")
 
         #Header Frame
         self.header_frame = ctk.CTkFrame(self, height=50)
-        self.header_frame.pack(fill="x", pady=10)
+        self.header_frame.pack(fill="x", side="top", padx=framepadding, pady=framepadding)
 
         self.header_label = ctk.CTkLabel(self.header_frame, 
                                          text="Python Hub",
@@ -29,36 +32,45 @@ class App(ctk.CTk):
         
         #Sidebar
         self.sidebar_frame = ctk.CTkFrame(self, width=reswidth / 4.5)
-        
-        self.sidebar_frame.pack(fill="y", side="left", padx=10, pady=10)
+        self.sidebar_frame.pack(fill="y", side="left", padx=framepadding, pady=framepadding)
+
+        ctk.CTkButton(self.sidebar_frame, text="Home",).pack(pady=10, padx=10)
+        ctk.CTkButton(self.sidebar_frame, text="Settings",).pack(pady=10, padx=10)
+        ctk.CTkButton(self.sidebar_frame, text="About",).pack(pady=10, padx=10)
+        ctk.CTkButton(self.sidebar_frame, text="Exit", command=self.quit).pack(pady=10, padx=10)
+        self.appearnce_switch = ctk.CTkSwitch(self.sidebar_frame, text="Dark Mode", command=self.toggle_appearance)
+        self.appearnce_switch.pack(pady=10, side="bottom")
+        self.appearnce_switch.select()
 
 
         #Main Section
         self.main_frame = ctk.CTkFrame(self)
-        self.main_frame.pack(fill="both", expand=True, padx=20, pady=10)
+        self.main_frame.pack(fill="both", expand=True, padx=framepadding, pady=framepadding)
+        self.projectLabel = ctk.CTkLabel(self.main_frame, text = "Projects", font=("Arial", 45))
+        self.projectLabel.pack(pady=framepadding, side = "top")
 
-        self.label = ctk.CTkLabel(self.main_frame,
-                                text = "Click the button below:")
-        self.label.pack(pady=10)
-        self.label = ctk.CTkLabel(self.main_frame,
-                                text = "My Name is Connor:")
-        self.label.pack(pady=10)
+        self.CTkEntry = ctk.CTkEntry(self.main_frame, placeholder_text="Enter Project Name", width=reswidth / 2)
+        self.CTkEntry.pack(pady=framepadding, side=("top"))
 
-        self.button = ctk.CTkButton(self.main_frame,
-                                    text="Click Me",
-                                    command=self.on_button_click)
-        self.button.pack(pady=10)
+        #Project Tile
+        tile = ctk.CTkFrame(self.main_frame, corner_radius=10)
+        tile.pack(pady=10, padx=10, fill="x")
 
-        self.counter = 0
+        
 
-        self.label = ctk.CTkLabel(self.main_frame,
-                                  text=f"Button clicked {self.counter} times")
-        self.label.pack(pady=10)
+
     
     def on_button_click(self):
         print("Button clicked!")
         self.counter += 1
         self.label.configure(text=f"Button clicked {self.counter} times")
         print(self.counter)
+
+    def toggle_appearance(self) -> None:
+        if self.appearnce_switch.get() == 1:
+            ctk.set_appearance_mode("dark")
+        else:
+            ctk.set_appearance_mode("light")
+        
 
         
