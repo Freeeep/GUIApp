@@ -44,19 +44,58 @@ class App(ctk.CTk):
 
 
         #Main Section
+       # Main Frame
         self.main_frame = ctk.CTkFrame(self)
         self.main_frame.pack(fill="both", expand=True, padx=framepadding, pady=framepadding)
-        self.projectLabel = ctk.CTkLabel(self.main_frame, text = "Projects", font=("Arial", 45))
-        self.projectLabel.pack(pady=framepadding, side = "top")
 
-        self.CTkEntry = ctk.CTkEntry(self.main_frame, placeholder_text="Enter Project Name", width=reswidth / 2)
-        self.CTkEntry.pack(pady=framepadding, side=("top"))
+        # Configure grid layout for main_frame
+        self.main_frame.grid_columnconfigure((0, 1, 2), weight=1)  # 3 columns for tiles
+        self.main_frame.grid_rowconfigure(2, weight=1)  # Allow tile row to expand
 
-        #Project Tile
-        tile = ctk.CTkFrame(self.main_frame, corner_radius=10)
-        tile.pack(pady=10, padx=10, fill="x")
+        # Title Label
+        self.projectLabel = ctk.CTkLabel(
+            self.main_frame,
+            text="Projects",
+            font=("Arial", 45)
+        )
+        self.projectLabel.grid(row=0, column=0, columnspan=3, pady=framepadding, sticky="n")
 
-        
+        # Entry Field
+        self.CTkEntry = ctk.CTkEntry(
+            self.main_frame,
+            placeholder_text="Enter Project Name",
+            width=reswidth / 2
+        )
+        self.CTkEntry.grid(row=1, column=0, columnspan=3, pady=framepadding)
+
+        # Project Tiles (3 side-by-side)
+        # Configure 3 columns and 3 rows
+        for col in range(3):
+            self.main_frame.grid_columnconfigure(col, weight=1)
+        for row in range(3, 6):  # Assuming rows 0–2 are used for label/entry
+            self.main_frame.grid_rowconfigure(row, weight=1)
+
+        # Create 9 tiles
+        for i in range(9):
+            row = i // 3 + 2  # Start at row 3
+            col = i % 3
+
+            tile = ctk.CTkFrame(
+                self.main_frame,
+                width=reswidth / 5,
+                height=resheight / 2,
+                corner_radius=10
+            )
+            tile.grid(row=row, column=col, padx=10, pady=10, sticky="nsew")
+
+            # Optional: Add content
+            ctk.CTkLabel(tile, text=f"Project {i+1}", font=("Arial", 14)).pack(pady=5)
+            ctk.CTkButton(tile, text="Launch").pack(pady=5)
+
+
+
+
+
 
 
     
